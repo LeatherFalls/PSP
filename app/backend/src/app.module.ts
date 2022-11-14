@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { UserModule } from './app/user/user.module';
+import { AccountModule } from './app/account/account.module';
 
 @Module({
   imports: [
@@ -15,9 +15,10 @@ import { AppService } from './app.service';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: true,
     }),
+    UserModule,
+    AccountModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
