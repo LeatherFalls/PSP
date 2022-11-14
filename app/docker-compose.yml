@@ -1,0 +1,32 @@
+version: '3.9'
+services:
+  frontend:
+    container_name: app_frontend
+    build: ./frontend
+    ports:
+      - 3000:3000
+    working_dir: /app-frontend
+    depends_on:
+      - backend
+  backend:
+    container_name: app_backend
+    build: ./backend
+    ports:
+      - 3001:3001
+    working_dir: /app-backend
+    depends_on:
+      - db
+    environment:
+      - APP_PORT=3001
+      - JWT_SECRET=NGCA$$$HH
+      - POSTGRES_USER=postgres
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5441
+  db:
+    container_name: db
+    image: postgres:10.4
+    ports:
+      - 5441:5432
+    environment:
+      - DB_PASSWORD=123456
+    restart: 'always'
