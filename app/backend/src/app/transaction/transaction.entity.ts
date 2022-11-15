@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { AccountEntity } from '../account/account.entity';
 
 @Entity({ name: 'transactions' })
@@ -15,6 +21,6 @@ export class TransactionEntity {
   @Column({ nullable: false })
   value: number;
 
-  @Column({ nullable: false })
+  @CreateDateColumn({ name: 'created_at', nullable: false })
   createdAt: Date;
 }
