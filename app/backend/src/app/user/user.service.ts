@@ -18,6 +18,7 @@ export class UserService {
     if (existingUser) {
       throw new NotFoundException('User already exists');
     }
+
     const newUser = this.userRepository.create(user);
     return await this.userRepository.save(newUser);
   }

@@ -10,16 +10,25 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import { AccountService } from '../account/account.service';
 import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
 
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly accountService: AccountService,
+  ) {}
 
   @Post()
   async create(@Body() user: UserEntity) {
-    return await this.userService.create(user);
+    const newAccount = await this.accountService.createAccount();
+    const newUser = await this.userService.create({
+      ...user,
+      accountId: newAccount.id as any,
+    });
+    return newUser;
   }
 
   @Get()

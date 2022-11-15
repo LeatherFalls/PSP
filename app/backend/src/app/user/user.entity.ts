@@ -27,12 +27,15 @@ export class UserEntity {
   @Column({ nullable: false })
   password: string;
 
-  @OneToOne(() => AccountEntity, (account) => account.id)
+  @OneToOne(() => AccountEntity, (account) => account.userId, {
+    eager: true,
+    cascade: true,
+  })
   @JoinColumn({ name: 'account_id' })
   accountId: AccountEntity;
 
   @BeforeInsert()
-  passwordHash() {
+  passwordHash?() {
     this.password = hashSync(this.password, 10);
   }
 }

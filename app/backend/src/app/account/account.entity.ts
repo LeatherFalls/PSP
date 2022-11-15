@@ -16,7 +16,7 @@ export class AccountEntity {
   @Column({ nullable: false })
   balance: number;
 
-  @OneToOne(() => UserEntity, (user) => user)
+  @OneToOne(() => UserEntity, (user) => user.accountId)
   userId: UserEntity;
 
   @OneToMany(() => TransactionEntity, (transaction) => transaction)

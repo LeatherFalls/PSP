@@ -1,4 +1,22 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { AccountEntity } from './account.entity';
 
 @Injectable()
-export class AccountService {}
+export class AccountService {
+  private balance: number;
+
+  constructor(
+    @InjectRepository(AccountEntity)
+    private readonly accountRepository: Repository<AccountEntity>,
+  ) {
+    this.balance = 100;
+  }
+
+  async createAccount(): Promise<AccountEntity> {
+    const newAccount = this.accountRepository.create();
+    newAccount.balance = this.balance;
+    return await this.accountRepository.save(newAccount);
+  }
+}
