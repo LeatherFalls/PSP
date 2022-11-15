@@ -11,7 +11,15 @@ export class UserService {
   ) {}
 
   async create(user: UserEntity): Promise<UserEntity> {
-    return await this.userRepository.save(user);
+    const existingUser = await this.userRepository.findOne({
+      where: { username: user.username },
+    });
+
+    if (existingUser) {
+      throw new NotFoundException('User already exists');
+    }
+    const newUser = this.userRepository.create(user);
+    return await this.userRepository.save(newUser);
   }
 
   async findAll(): Promise<UserEntity[]> {
@@ -22,7 +30,10 @@ export class UserService {
 
   async findOne(options: FindOneOptions<UserEntity>): Promise<UserEntity> {
     try {
-      return await this.userRepository.findOneOrFail(options);
+      return await this.userRepository.findOneOrFail({
+        select: ['id', 'username', 'accountId'],
+        ...options,
+      });
     } catch (error) {
       throw new NotFoundException(error.message);
     }
