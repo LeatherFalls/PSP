@@ -20,7 +20,10 @@ export class UserEntity {
   @Column({ nullable: false, unique: true })
   username: string;
 
-  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/)
+  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, {
+    message:
+      'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter and one number',
+  })
   @Column({ nullable: false })
   password: string;
 
@@ -30,6 +33,6 @@ export class UserEntity {
 
   @BeforeInsert()
   passwordHash() {
-    this.password = hashSync(this.password, 8);
+    this.password = hashSync(this.password, 10);
   }
 }
