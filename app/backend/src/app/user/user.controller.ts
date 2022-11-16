@@ -9,11 +9,13 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { AccountService } from '../account/account.service';
 import { UpdateDTO } from './dto/update.dto';
 import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
 export class UserController {
@@ -32,21 +34,25 @@ export class UserController {
     return newUser;
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   async findAll() {
     return await this.userService.findAll();
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get(':id')
   async findOne(@Param('id', new ParseUUIDPipe()) id: string) {
     return await this.userService.findOne({ where: { id } });
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get(':username')
   async findOneByUsername(@Param('username') username: string) {
     return await this.userService.findOne({ where: { username } });
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Put(':id')
   async update(
     @Param('id', new ParseUUIDPipe()) id: string,
@@ -55,6 +61,7 @@ export class UserController {
     return await this.userService.update(id, data);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param('id', new ParseUUIDPipe()) id: string) {

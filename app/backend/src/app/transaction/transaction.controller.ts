@@ -1,7 +1,16 @@
-import { Body, Controller, Param, ParseUUIDPipe, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Param,
+  ParseUUIDPipe,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { CreateTransferDTO } from '../user/dto/createTransfer.fto';
 import { TransactionService } from './transaction.service';
+import { AuthGuard } from '@nestjs/passport';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('transactions')
 export class TransactionController {
   constructor(private readonly transactionService: TransactionService) {}

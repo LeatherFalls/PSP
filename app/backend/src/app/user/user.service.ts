@@ -41,6 +41,18 @@ export class UserService {
     }
   }
 
+  async findOneForLogin(
+    options: FindOneOptions<UserEntity>,
+  ): Promise<UserEntity> {
+    try {
+      return await this.userRepository.findOneOrFail({
+        ...options,
+      });
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
+  }
+
   async update(id: string, data: UpdateDTO): Promise<UserEntity> {
     const user = await this.findOne({ where: { id } });
     this.userRepository.merge(user, data);
