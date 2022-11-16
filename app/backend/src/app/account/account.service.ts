@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 import { AccountEntity } from './account.entity';
 
 @Injectable()
@@ -18,6 +18,24 @@ export class AccountService {
     const newAccount = this.accountRepository.create();
     newAccount.balance = this.balance;
     return await this.accountRepository.save(newAccount);
+  }
+
+  async findOneAccount(
+    options: FindOneOptions<AccountEntity>,
+  ): Promise<AccountEntity> {
+    try {
+      return await this.accountRepository.findOneOrFail({
+        ...options,
+      });
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
+  }
+
+  async updateAccount(id: string, balance: number): Promise<AccountEntity> {
+    const account = await this.findOneAccount({ where: { id } });
+    this.accountRepository.merge(account, { balance });
+    return await this.accountRepository.save(account);
   }
 
   async deleteAccount(id: string): Promise<AccountEntity> {
