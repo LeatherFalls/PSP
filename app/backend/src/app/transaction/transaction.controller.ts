@@ -1,4 +1,16 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Param, ParseUUIDPipe, Post } from '@nestjs/common';
+import { CreateTransferDTO } from '../user/dto/createTransfer.fto';
+import { TransactionService } from './transaction.service';
 
-@Controller('transaction')
-export class TransactionController {}
+@Controller('transactions')
+export class TransactionController {
+  constructor(private readonly transactionService: TransactionService) {}
+
+  @Post(':id')
+  async createTransaction(
+    @Body() data: CreateTransferDTO,
+    @Param('id', new ParseUUIDPipe()) id: string,
+  ) {
+    return await this.transactionService.createTransaction(data, id);
+  }
+}
