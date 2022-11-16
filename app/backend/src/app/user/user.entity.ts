@@ -30,6 +30,7 @@ export class UserEntity {
   @OneToOne(() => AccountEntity, (account) => account.userId, {
     eager: true,
     cascade: true,
+    onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'account_id' })
   accountId: AccountEntity;

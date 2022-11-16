@@ -19,4 +19,11 @@ export class AccountService {
     newAccount.balance = this.balance;
     return await this.accountRepository.save(newAccount);
   }
+
+  async deleteAccount(id: string): Promise<AccountEntity> {
+    const account = await this.accountRepository.findOneOrFail({
+      where: { id },
+    });
+    return await this.accountRepository.remove(account);
+  }
 }
