@@ -52,4 +52,17 @@ export class TransactionService {
 
     return await this.transactionRepository.save(newTransaction);
   }
+
+  async getTransactions(id: string): Promise<TransactionEntity[]> {
+    const user = await this.userService.findOne({
+      where: { id },
+    });
+
+    return await this.transactionRepository.find({
+      where: [
+        { debitedAccountId: user.accountId as any },
+        { creditedAccountId: user.accountId as any },
+      ],
+    });
+  }
 }

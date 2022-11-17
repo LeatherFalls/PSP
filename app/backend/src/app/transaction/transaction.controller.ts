@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   ParseUUIDPipe,
   Post,
@@ -21,5 +22,10 @@ export class TransactionController {
     @Param('id', new ParseUUIDPipe()) id: string,
   ) {
     return await this.transactionService.createTransaction(data, id);
+  }
+
+  @Get(':id')
+  async getTransactions(@Param('id', new ParseUUIDPipe()) id: string) {
+    return await this.transactionService.getTransactions(id);
   }
 }
