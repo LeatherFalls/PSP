@@ -1,0 +1,93 @@
+:root {
+  --login_marginb: 40px;
+  --login_marginb2: 20px;
+}
+
+.login_container {
+  background-color: black;
+  color: white;
+}
+
+.login_content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  width: 100vw;
+}
+
+.login_logo {
+  height: 100px;
+  margin-bottom: var(--login_marginb);
+  width: 100px;
+}
+
+.login_form {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: var(--login_marginb);
+  padding: 0 4rem;
+}
+
+.login_form h1 {
+  margin-bottom: var(--login_marginb2);
+}
+
+.login_form p {
+  line-height: 1.5;
+  margin-bottom: var(--login_marginb);
+  padding: 0 1.5rem;
+  text-align: center;
+}
+
+.login_form form {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.login_form form input {
+  background-color: transparent;
+  border-bottom: 1px solid white;
+  color: white;
+  height: 1.5rem;
+  margin-bottom: var(--login_marginb2);
+  width: 100%;
+}
+
+.user_span, .pass_span {
+  font-size: 14px;
+  position: relative;
+  transform: translate(-5.4rem, -2.6rem);
+}
+
+.username_input:focus ~ .user_span {
+  color: rgb(255, 0, 255);
+  transform: translate(-5.4rem, -4rem);
+  transition: all 0.2s ease-in-out;
+}
+
+.password_input:focus ~ .pass_span {
+  color: rgb(255, 0, 255);
+  transform: translate(-5.4rem, -4rem);
+  transition: all 0.2s ease-in-out;
+}
+
+.login_form form input::placeholder {
+  color: white;
+}
+
+.login_form form button {
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 1rem 2rem;
+}
+
+p a {
+  color: rgb(255, 0, 255);
+  text-decoration: none;
+}

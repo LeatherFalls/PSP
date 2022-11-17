@@ -1,8 +1,6 @@
 import React from 'react'
 
-export interface ISignUp {}
-
-export const SignUp: React.FunctionComponent<ISignUp> = () => {
+export const SignUp = () => {
   return (
     <div>SignUp</div>
   )
