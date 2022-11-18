@@ -11,9 +11,7 @@ export const Login = () => {
   const [password, setPassword] = useState<string>('')
   const [error, setError] = useState<string>('')
 
-  const notify = () => {
-    toast.error(error);
-  };
+  const notify = async () => toast.error(error)
 
   const navigate: NavigateFunction = useNavigate()
 
@@ -29,8 +27,10 @@ export const Login = () => {
       navigate('/dashboard');
       localStorage.setItem('user', JSON.stringify(user));
 
-    } catch (error) {
-      setError('Invalid username or password');
+    } catch (error: any) {
+      console.log(error);
+      error.response.data.message = 'Invalid username or password';
+      setError(error.response.data.message);
       notify();
     }
   };
