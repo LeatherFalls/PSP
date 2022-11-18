@@ -1,0 +1,41 @@
+.dashboard_content {
+  padding: 0 2rem;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--login_marginb);
+  padding-top: 2rem;
+  width: 100%;
+}
+
+.header_user h1 {
+  font-weight: 400;
+}
+
+.header img {
+  height: 30px;
+}
+
+.dashboard_balance {
+  align-items: center;
+  background-image: url('../../assets/images/balance.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  border-radius: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.dashboard_balance h3 {
+  margin: var(--login_marginb2) 0;
+}
+
+.dashboard_balance h1 {
+  margin-bottom: var(--login_marginb2);
+}

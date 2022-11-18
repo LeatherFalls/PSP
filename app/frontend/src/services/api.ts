@@ -29,3 +29,15 @@ export const register = async (username: string, password: string) => {
 
   return response;
 }
+
+export const getUser = async (id: string) => {
+  const response = await api({
+    method: 'get',
+    headers: {
+      authorization: `Bearer ${JSON.parse(localStorage.getItem('user') || '{}').token}`,
+    },
+    url: `/users/${id}`,
+  })
+
+  return response.data;
+}
