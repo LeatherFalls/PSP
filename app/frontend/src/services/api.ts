@@ -41,3 +41,15 @@ export const getUser = async (id: string) => {
 
   return response.data;
 }
+
+export const getTransactions = async (id: string) => {
+  const response = await api({
+    method: 'get',
+    headers: {
+      authorization: `Bearer ${JSON.parse(localStorage.getItem('user') || '{}').token}`,
+    },
+    url: `/transactions/${id}`,
+  })
+
+  return response.data;
+}
