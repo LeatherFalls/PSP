@@ -77,3 +77,19 @@ export const getCashOutTransactions = async (id: string) => {
 
   return response.data;
 }
+
+export const createTransaction = async (username: string, value: string, id: string) => {
+  const response = await api({
+    method: 'post',
+    headers: {
+      authorization: `Bearer ${JSON.parse(localStorage.getItem('user') || '{}').token}`,
+    },
+    url: `/transactions/${id}`,
+    data: {
+      username,
+      value,
+    },
+  });
+
+  return response;
+}

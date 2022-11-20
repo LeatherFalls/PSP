@@ -51,13 +51,33 @@ export const SignUp = () => {
               type='text'
               onChange={ (e) => setUsername(e.target.value) }
             />
-            <span className='user_span'>username</span>
+            {
+              username.length > 0 ? (
+                <span className='user_span' style={{
+                  color: 'rgb(255, 0, 255)',
+                  transform: 'translate(-5.4rem, -4rem)',
+                  transition: 'all 0.2s ease-in-out',
+                }}>username</span>
+              ) : (
+                <span className='user_span'>username</span>
+              )
+            }
             <input
               className='password_input'
               type='password'
               onChange={ (e) => setPassword(e.target.value) }
             />
-            <span className='pass_span'>password</span>
+            {
+              password.length > 0 ? (
+                <span className='pass_span' style={{
+                  color: 'rgb(255, 0, 255)',
+                  transform: 'translate(-5.4rem, -4rem)',
+                  transition: 'all 0.2s ease-in-out',
+                }}>password</span>
+              ) : (
+                <span className='pass_span'>password</span>
+              )
+            }
             <button
               type='button'
               onClick={ userSignUp }

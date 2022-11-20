@@ -3,6 +3,7 @@ import { Login } from './pages/Login/Login'
 import { SignUp } from './pages/Register/SignUp'
 import { ToastContainer } from 'react-toastify';
 import { Dashboard } from './pages/Dashboard/Dashboard';
+import { Transactions } from './pages/Transactions/Transactions';
 
 export interface AppProps {}
 
@@ -15,6 +16,7 @@ const App: React.FunctionComponent<AppProps> = () => {
         <Route path="/login" element={ <Login /> } />
         <Route path="/register" element={ <SignUp /> } />
         <Route path="/dashboard" element={ <Dashboard /> } />
+        <Route path="/transactions" element={ <Transactions /> } />
       </Routes>
     </BrowserRouter>
   )

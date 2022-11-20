@@ -8,6 +8,7 @@ import moment from 'moment';
 import './Dashboard.css';
 import { Footer } from '../../components/Footer/Footer';
 import { Header } from '../../components/Header/Header';
+import { Balance } from '../../components/Balance/Balance';
 
 interface IUserObject {
   username: string,
@@ -20,7 +21,6 @@ interface ITransactions {
 }
 
 export const Dashboard = () => {
-  const [balance, setBalance] = useState<number>();
   const [cashIn, setCashIn] = useState<ITransactions[]>([])
   const [cashOut, setCashOut] = useState<ITransactions[]>([])
   const [allTransactions, setAllTransactions] = useState<ITransactions[]>([...cashIn, ...cashOut])
@@ -66,29 +66,15 @@ export const Dashboard = () => {
     setAllTransactions([...cashIn, ...cashOut]);
   }
 
-  const getUserById = async () => {
-    try {
-      const response = await getUser(userLs.id);
-      setBalance(response.accountId.balance);
-    } catch (error) {
-      handleLogout();
-    }
-  }
-
   useEffect(() => {
-    getUserById();
     handleAllTransactions();
-    console.log(allTransactions);
   }, [])
   
   return (
     <div className='dashboard_container'>
       <div className='dashboard_content'>
         <Header />
-        <div className='dashboard_balance'>
-          <h3>Balance</h3>
-          <h1>R$ <span>{balance?.toFixed(2)}</span></h1>
-        </div>
+        <Balance />
         <h3 className='dashboard_activity'>Activity</h3>
         {
           allTransactions.map((transaction, index) => (
