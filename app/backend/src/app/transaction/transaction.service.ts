@@ -26,7 +26,10 @@ export class TransactionService {
       where: { id },
     });
 
-    if (cashOut.accountId.balance < data.value) {
+    if (
+      cashOut.accountId.balance < data.value ||
+      cashOut.accountId.balance <= 0
+    ) {
       throw new NotAcceptableException('Insufficient funds');
     }
 
@@ -63,6 +66,26 @@ export class TransactionService {
         { debitedAccountId: user.accountId as any },
         { creditedAccountId: user.accountId as any },
       ],
+    });
+  }
+
+  async getCashInTransactions(id: string): Promise<TransactionEntity[]> {
+    const user = await this.userService.findOne({
+      where: { id },
+    });
+
+    return await this.transactionRepository.find({
+      where: { creditedAccountId: user.accountId as any },
+    });
+  }
+
+  async getCashOutTransactions(id: string): Promise<TransactionEntity[]> {
+    const user = await this.userService.findOne({
+      where: { id },
+    });
+
+    return await this.transactionRepository.find({
+      where: { debitedAccountId: user.accountId as any },
     });
   }
 }

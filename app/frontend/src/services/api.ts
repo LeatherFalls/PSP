@@ -53,3 +53,27 @@ export const getTransactions = async (id: string) => {
 
   return response.data;
 }
+
+export const getCashInTransactions = async (id: string) => {
+  const response = await api({
+    method: 'get',
+    headers: {
+      authorization: `Bearer ${JSON.parse(localStorage.getItem('user') || '{}').token}`,
+    },
+    url: `/transactions/cashIn/${id}`,
+  })
+
+  return response.data;
+}
+
+export const getCashOutTransactions = async (id: string) => {
+  const response = await api({
+    method: 'get',
+    headers: {
+      authorization: `Bearer ${JSON.parse(localStorage.getItem('user') || '{}').token}`,
+    },
+    url: `/transactions/cashOut/${id}`,
+  })
+
+  return response.data;
+}

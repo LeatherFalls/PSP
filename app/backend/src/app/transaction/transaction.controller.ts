@@ -28,4 +28,14 @@ export class TransactionController {
   async getTransactions(@Param('id', new ParseUUIDPipe()) id: string) {
     return await this.transactionService.getTransactions(id);
   }
+
+  @Get('/cashIn/:id')
+  async getCashInTransactions(@Param('id', new ParseUUIDPipe()) id: string) {
+    return await this.transactionService.getCashInTransactions(id);
+  }
+
+  @Get('/cashOut/:id')
+  async getCashOutTransactions(@Param('id', new ParseUUIDPipe()) id: string) {
+    return await this.transactionService.getCashOutTransactions(id);
+  }
 }

@@ -2,24 +2,28 @@ import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from 'react-router-dom';
-import { getTransactions, getUser } from '../../services/api';
+import { getCashInTransactions, getCashOutTransactions, getTransactions, getUser } from '../../services/api';
 import logout from '../../assets/images/logout.svg';
 import moment from 'moment';
 import './Dashboard.css';
+import { Footer } from '../../components/Footer/Footer';
+import { Header } from '../../components/Header/Header';
 
 interface IUserObject {
   username: string,
 }
 
-interface ITest {
+interface ITransactions {
   value: number;
   createdAt: string;
+  status: string;
 }
 
 export const Dashboard = () => {
-  const [user, setUser] = useState<IUserObject>();
   const [balance, setBalance] = useState<number>();
-  const [transactions, setTransactions] = useState<ITest[]>([])
+  const [cashIn, setCashIn] = useState<ITransactions[]>([])
+  const [cashOut, setCashOut] = useState<ITransactions[]>([])
+  const [allTransactions, setAllTransactions] = useState<ITransactions[]>([...cashIn, ...cashOut])
 
   const navigate = useNavigate();
 
@@ -30,65 +34,81 @@ export const Dashboard = () => {
     navigate('/login');
   }
 
-  const renderTransactions = async () => {
+  const handleCashIn = async () => {
     try {
-      const response = await getTransactions(userLs.id);
-      setTransactions(response)
-      console.log(response);
+      const response = await getCashInTransactions(userLs.id);
+      response.map((item: ITransactions) => {
+        item.status = 'cashIn';
+      })
+      
+      return response;
     } catch (error) {
       handleLogout();
     }
+  }
+
+  const handleCashOut = async () => {
+    try {
+      const response = await getCashOutTransactions(userLs.id);
+      response.map((item: ITransactions) => {
+        item.status = 'cashOut';
+      })
+
+      return response;
+    } catch (error) {
+      handleLogout();
+    }
+  }
+
+  const handleAllTransactions = async () => {
+    const cashIn = await handleCashIn();
+    const cashOut = await handleCashOut();
+    setAllTransactions([...cashIn, ...cashOut]);
   }
 
   const getUserById = async () => {
     try {
       const response = await getUser(userLs.id);
       setBalance(response.accountId.balance);
-      console.log(response);
     } catch (error) {
       handleLogout();
     }
   }
 
-  const now = moment().format('ll');
-
   useEffect(() => {
     getUserById();
-    renderTransactions();
-    setUser(userLs);
+    handleAllTransactions();
+    console.log(allTransactions);
   }, [])
   
   return (
     <div className='dashboard_container'>
       <div className='dashboard_content'>
-        <header className='header'>
-          <div className='header_user'>
-            <p>{now}</p>
-            <h1>Hi, { user?.username }!</h1>
-          </div>
-          <img
-            src={ logout }
-            alt='logout'
-            onClick={ handleLogout }
-          />
-        </header>
+        <Header />
         <div className='dashboard_balance'>
           <h3>Balance</h3>
           <h1>R$ <span>{balance?.toFixed(2)}</span></h1>
         </div>
         <h3 className='dashboard_activity'>Activity</h3>
         {
-          transactions.map((transaction, index) => (
+          allTransactions.map((transaction, index) => (
             <div
               className='dashboard_transactions'
               key={ index }
             >
               <p>{moment(transaction.createdAt).format('lll')}</p>
-              <p>R$ {transaction.value.toFixed(2)}</p>
+              {
+                transaction.status === 'cashIn' ? (
+                  <p className='dashboard_transactions__green'>+ R$ {transaction.value.toFixed(2)}</p>
+                ) : (
+                  <p className='dashboard_transactions__red'>- R$ {transaction.value.toFixed(2)}</p>
+                )
+              }
             </div>
           ))
         }
       </div>
+      <Footer />
     </div>
   )
 }
