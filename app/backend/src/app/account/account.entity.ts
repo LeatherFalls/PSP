@@ -21,4 +21,11 @@ export class AccountEntity {
 
   @OneToMany(() => TransactionEntity, (transaction) => transaction)
   transactions: TransactionEntity[];
+
+  constructor(account?: Partial<AccountEntity>) {
+    this.id = account?.id;
+    this.balance = account?.balance;
+    this.userId = account?.userId;
+    this.transactions = account?.transactions;
+  }
 }

@@ -43,8 +43,6 @@ export class TransactionService {
       createdAt: new Date().toISOString(),
     });
 
-    console.log(newTransaction);
-
     await this.accountService.updateAccount(
       cashIn.accountId.id,
       cashIn.accountId.balance,
@@ -56,39 +54,6 @@ export class TransactionService {
     );
 
     return await this.transactionRepository.save(newTransaction);
-  }
-
-  async getTransactions(id: string): Promise<TransactionEntity[]> {
-    const user = await this.userService.findOne({
-      where: { id },
-    });
-
-    return await this.transactionRepository.find({
-      where: [
-        { debitedAccountId: user.accountId as any },
-        { creditedAccountId: user.accountId as any },
-      ],
-    });
-  }
-
-  async getCashInTransactions(id: string): Promise<TransactionEntity[]> {
-    const user = await this.userService.findOne({
-      where: { id },
-    });
-
-    return await this.transactionRepository.find({
-      where: { creditedAccountId: user.accountId as any },
-    });
-  }
-
-  async getCashOutTransactions(id: string): Promise<TransactionEntity[]> {
-    const user = await this.userService.findOne({
-      where: { id },
-    });
-
-    return await this.transactionRepository.find({
-      where: { debitedAccountId: user.accountId as any },
-    });
   }
 
   async filterCashInByDate(

@@ -28,4 +28,12 @@ export class TransactionEntity {
 
   @CreateDateColumn({ name: 'created_at', nullable: false })
   createdAt: Date;
+
+  constructor(transaction?: Partial<TransactionEntity>) {
+    this.id = transaction?.id;
+    this.debitedAccountId = transaction?.debitedAccountId;
+    this.creditedAccountId = transaction?.creditedAccountId;
+    this.value = transaction?.value;
+    this.createdAt = transaction?.createdAt;
+  }
 }
