@@ -46,7 +46,6 @@
 
 .dashboard_activity {
   font-weight: 500;
-  margin-bottom: var(--login_marginb2);
 }
 
 .dashboard_transactions {
@@ -63,4 +62,27 @@
 
 .dashboard_transactions__red {
   color: rgb(198, 40, 40);
+}
+
+.dashboard_filter {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--login_marginb2);
+}
+
+.dashboard_filter__date {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  width: 80%;
+}
+
+.react-datepicker-wrapper {
+  width: 6rem;
+}
+
+.dashboard_filter__date__end, .dashboard_filter__date__start {
+  text-align: center;
+  width: 100%;
 }

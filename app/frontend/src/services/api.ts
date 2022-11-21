@@ -93,3 +93,51 @@ export const createTransaction = async (username: string, value: string, id: str
 
   return response;
 }
+
+export const filterTransactionsByDate = async (id: string, minDate: string, maxDate: string) => {
+  const response = await api({
+    method: 'get',
+    headers: {
+      authorization: `Bearer ${JSON.parse(localStorage.getItem('user') || '{}').token}`,
+    },
+    url: `transactions/filterByDate/${id}/q`,
+    params: {
+      minDate,
+      maxDate,
+    },
+  });
+
+  return response.data;
+}
+
+export const filterCashInByDate = async (id: string, minDate: string, maxDate: string) => {
+  const response = await api({
+    method: 'get',
+    headers: {
+      authorization: `Bearer ${JSON.parse(localStorage.getItem('user') || '{}').token}`,
+    },
+    url: `transactions/cashIn/filterByDate/${id}/q`,
+    params: {
+      minDate,
+      maxDate,
+    },
+  });
+
+  return response.data;
+}
+
+export const filterCashOutByDate = async (id: string, minDate: string, maxDate: string) => {
+  const response = await api({
+    method: 'get',
+    headers: {
+      authorization: `Bearer ${JSON.parse(localStorage.getItem('user') || '{}').token}`,
+    },
+    url: `transactions/cashOut/filterByDate/${id}/q`,
+    params: {
+      minDate,
+      maxDate,
+    },
+  });
+
+  return response.data;
+}

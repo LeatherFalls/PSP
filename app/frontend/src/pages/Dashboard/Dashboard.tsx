@@ -1,18 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from 'react-router-dom';
-import { getCashInTransactions, getCashOutTransactions, getTransactions, getUser } from '../../services/api';
-import logout from '../../assets/images/logout.svg';
+import { filterCashInByDate, filterCashOutByDate } from '../../services/api';
 import moment from 'moment';
 import './Dashboard.css';
 import { Footer } from '../../components/Footer/Footer';
 import { Header } from '../../components/Header/Header';
 import { Balance } from '../../components/Balance/Balance';
-
-interface IUserObject {
-  username: string,
-}
+import "react-datepicker/dist/react-datepicker.css";
 
 interface ITransactions {
   value: number;
@@ -21,9 +17,13 @@ interface ITransactions {
 }
 
 export const Dashboard = () => {
+  const start = new Date(new Date().setDate(new Date().getDate() - 365));
+
   const [cashIn, setCashIn] = useState<ITransactions[]>([])
   const [cashOut, setCashOut] = useState<ITransactions[]>([])
   const [allTransactions, setAllTransactions] = useState<ITransactions[]>([...cashIn, ...cashOut])
+  const [startDate, setStartDate] = useState(start);
+  const [endDate, setEndDate] = useState(new Date(new Date().setDate(new Date().getDate() + 1)));
 
   const navigate = useNavigate();
 
@@ -36,11 +36,14 @@ export const Dashboard = () => {
 
   const handleCashIn = async () => {
     try {
-      const response = await getCashInTransactions(userLs.id);
+      const dateMin = startDate.toISOString().slice(0, 10);
+      const dateMax = endDate.toISOString().slice(0, 10);
+      const response = await filterCashInByDate(userLs.id, dateMin, dateMax);
       response.map((item: ITransactions) => {
         item.status = 'cashIn';
       })
-      
+      console.log(response);
+
       return response;
     } catch (error) {
       handleLogout();
@@ -49,33 +52,53 @@ export const Dashboard = () => {
 
   const handleCashOut = async () => {
     try {
-      const response = await getCashOutTransactions(userLs.id);
+      const dateMin = startDate.toISOString().slice(0, 10);
+      const dateMax = endDate.toISOString().slice(0, 10);
+      const response = await filterCashOutByDate(userLs.id, dateMin, dateMax);
       response.map((item: ITransactions) => {
         item.status = 'cashOut';
       })
 
+      console.log(response);
       return response;
     } catch (error) {
       handleLogout();
     }
   }
 
-  const handleAllTransactions = async () => {
+  const filterTransactions = async () => {
     const cashIn = await handleCashIn();
     const cashOut = await handleCashOut();
+
     setAllTransactions([...cashIn, ...cashOut]);
   }
 
   useEffect(() => {
-    handleAllTransactions();
-  }, [])
+    filterTransactions();
+  }, [startDate, endDate])
   
   return (
     <div className='dashboard_container'>
       <div className='dashboard_content'>
         <Header />
         <Balance />
-        <h3 className='dashboard_activity'>Activity</h3>
+        <div className='dashboard_filter'>
+          <h3 className='dashboard_activity'>Activity</h3>
+          <div className='dashboard_filter__date'>
+            <DatePicker
+              selected={startDate}
+              onChange={(date: Date) => setStartDate(date)}
+              dateFormat="yyyy/MM/dd"
+              className='dashboard_filter__date__start'
+            />
+            <DatePicker
+              selected={endDate}
+              onChange={(date: Date) => setEndDate(date)}
+              dateFormat="yyyy/MM/dd"
+              className='dashboard_filter__date__end'
+            />
+          </div>
+        </div>
         {
           allTransactions.map((transaction, index) => (
             <div
