@@ -1,6 +1,6 @@
 import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { AccountService } from '../account/account.service';
 import { CreateTransferDTO } from '../user/dto/createTransfer.fto';
 import { UserService } from '../user/user.service';
@@ -26,19 +26,24 @@ export class TransactionService {
       where: { id },
     });
 
-    if (cashOut.accountId.balance < data.value) {
+    if (
+      cashOut.accountId.balance < data.value ||
+      cashOut.accountId.balance <= 0
+    ) {
       throw new NotAcceptableException('Insufficient funds');
     }
 
-    cashIn.accountId.balance += data.value;
-    cashOut.accountId.balance -= data.value;
+    cashIn.accountId.balance += Number(data.value);
+    cashOut.accountId.balance -= Number(data.value);
 
     const newTransaction = this.transactionRepository.create({
       debitedAccountId: cashOut.accountId,
       creditedAccountId: cashIn.accountId,
-      value: data.value,
-      createdAt: new Date(),
+      value: Number(data.value),
+      createdAt: new Date().toISOString(),
     });
+
+    console.log(newTransaction);
 
     await this.accountService.updateAccount(
       cashIn.accountId.id,
@@ -62,6 +67,67 @@ export class TransactionService {
       where: [
         { debitedAccountId: user.accountId as any },
         { creditedAccountId: user.accountId as any },
+      ],
+    });
+  }
+
+  async getCashInTransactions(id: string): Promise<TransactionEntity[]> {
+    const user = await this.userService.findOne({
+      where: { id },
+    });
+
+    return await this.transactionRepository.find({
+      where: { creditedAccountId: user.accountId as any },
+    });
+  }
+
+  async getCashOutTransactions(id: string): Promise<TransactionEntity[]> {
+    const user = await this.userService.findOne({
+      where: { id },
+    });
+
+    return await this.transactionRepository.find({
+      where: { debitedAccountId: user.accountId as any },
+    });
+  }
+
+  async filterCashInByDate(
+    id: string,
+    minDate: string,
+    maxDate: string,
+  ): Promise<TransactionEntity[]> {
+    console.log(minDate, maxDate);
+
+    const user = await this.userService.findOne({
+      where: { id },
+    });
+    const test = await this.transactionRepository.find({
+      where: [
+        {
+          createdAt: Between(minDate, maxDate) as any,
+          creditedAccountId: user.accountId as any,
+        },
+      ],
+    });
+
+    return test;
+  }
+
+  async filterCashOutByDate(
+    id: string,
+    minDate: string,
+    maxDate: string,
+  ): Promise<TransactionEntity[]> {
+    const user = await this.userService.findOne({
+      where: { id },
+    });
+
+    return await this.transactionRepository.find({
+      where: [
+        {
+          createdAt: Between(minDate, maxDate) as any,
+          debitedAccountId: user.accountId as any,
+        },
       ],
     });
   }

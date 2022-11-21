@@ -1,0 +1,88 @@
+.dashboard_content {
+  color: rgb(72, 72, 72);
+  margin-bottom: 4rem;
+  padding: 0 2rem;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--login_marginb);
+  padding-top: 2rem;
+  width: 100%;
+}
+
+.header_user h1 {
+  font-weight: 500;
+}
+
+.header img {
+  height: 30px;
+}
+
+.dashboard_balance {
+  align-items: center;
+  background-image: url('../../assets/images/balance.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  border-radius: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: var(--login_marginb);
+}
+
+.dashboard_balance h3 {
+  font-weight: 400;
+  margin: var(--login_marginb2) 0;
+}
+
+.dashboard_balance h1 {
+  margin-bottom: var(--login_marginb2);
+}
+
+.dashboard_activity {
+  font-weight: 500;
+}
+
+.dashboard_transactions {
+  align-items: center;
+  border-bottom: 1px solid rgb(218, 218, 218);
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 0;
+}
+
+.dashboard_transactions__green {
+  color: rgb(0, 200, 83);
+}
+
+.dashboard_transactions__red {
+  color: rgb(198, 40, 40);
+}
+
+.dashboard_filter {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--login_marginb2);
+}
+
+.dashboard_filter__date {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  width: 80%;
+}
+
+.react-datepicker-wrapper {
+  width: 6rem;
+}
+
+.dashboard_filter__date__end, .dashboard_filter__date__start {
+  text-align: center;
+  width: 100%;
+}

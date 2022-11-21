@@ -1,0 +1,17 @@
+.footer_container {
+  bottom: 0;
+  backdrop-filter: blur(2px);
+  padding: 1rem 0;
+  position: fixed;
+  width: 100vw;
+}
+
+.footer_container footer {
+  display: flex;
+  justify-content: space-around;
+  width: 100vw;
+}
+
+.footer_container footer img {
+  height: 30px;
+}
