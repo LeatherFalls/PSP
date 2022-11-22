@@ -4,6 +4,8 @@ WORKDIR /app-backend
 
 COPY package*.json ./
 
+RUN npm install -g @nestjs/cli@8.0.0
+
 RUN npm install
 
 COPY . .

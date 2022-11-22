@@ -2,10 +2,12 @@ FROM node:16.14-alpine
 
 WORKDIR /app-frontend
 
-COPY . .
+COPY package* ./
 
 RUN npm install
 
-EXPOSE 3000
+COPY . .
+
+EXPOSE 5173
 
 CMD [ "npm", "run", "dev" ]
